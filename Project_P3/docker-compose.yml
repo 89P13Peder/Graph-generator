@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: ./server
+    container_name: bar_chart_server
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./server/data:/app/data
+    networks:
+      - bar_chart_network
+
+  client:
+    build:
+      context: ./client
+    depends_on:
+      - server
+    container_name: bar_chart_client
+    volumes:
+      - ./client/data:/app/data 
+    networks:
+      - bar_chart_network
+    stdin_open: true
+    tty: true  
+
+networks:
+  bar_chart_network:
+    driver: bridge
